@@ -4,7 +4,7 @@
 # VM name
 # Имя VM
 HOST_NAME = 'jenkins-master' 
-HOST_IP = '192.168.2.10' # VM IP
+HOST_IP = '172.23.26.235' # VM IP
 
 # Show VM GUI
 # Показывать гуй виртмашины
@@ -12,15 +12,15 @@ HOST_SHOW_GUI = false
 
 # VM RAM
 # Оперативная память ВМ
-HOST_MEMMORY = "2048" 
+HOST_MEMMORY = "1024" 
 
 # VM vCPU
 # Количество ядер ВМ
-HOST_CPUS = 4
+HOST_CPUS = 2
 
 # Network adapter to bridge
 # В какой сетевой адаптер делать бридж
-HOST_BRIDGE = "Intel(R) Ethernet Connection (2) I219-V" 
+HOST_BRIDGE = "Realtek PCIe GBE Family Controller" 
 #HOST_BRIDGE = "Intel(R) Wireless-AC 9560"
 
 # Which box to use
@@ -52,7 +52,7 @@ Vagrant.configure("2") do |config|
 	config.vm.box = HOST_VM_BOX
 	config.vm.hostname = HOST_NAME
 	config.vm.define HOST_NAME do |machine|
-		machine.vm.network :public_network, bridge: HOST_BRIDGE, ip: HOST_IP
+		#machine.vm.network :public_network, bridge: HOST_BRIDGE, ip: HOST_IP
 		machine.vm.provider "virtualbox" do |current_vm|
 			current_vm.name = HOST_NAME
 			current_vm.gui = HOST_SHOW_GUI

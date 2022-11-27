@@ -14,10 +14,10 @@ usermod --password $(openssl passwd -6 $2) $1
 
 
 apt update
-apt install htop -y
-apt install sshpass -y
-apt install unzip -y
-apt install software-properties-common gnupg2 curl -y
+# apt install htop -y
+# apt install sshpass -y
+# apt install unzip -y
+# apt install software-properties-common gnupg2 curl -y
 
 #Some packages may not be installed without vpn
 apt install openvpn -y
@@ -25,15 +25,15 @@ systemctl disable openvpn
 #Configuration for Surfshark
 wget https://my.surfshark.com/vpn/api/v1/server/configurations -P /tmp/
 unzip /tmp/configurations -d /tmp/
-cp /tmp/104.200.132.35_tcp.ovpn /etc/openvpn/
+cp /tmp/192.154.253.67_udp.ovpn /etc/openvpn/
 systemctl disable openvpn
-sed -i 's/auth-user-pass/auth-user-pass auth.conf/g' /etc/openvpn/104.200.132.35_tcp.ovpn
+sed -i 's/auth-user-pass/auth-user-pass auth.conf/g' /etc/openvpn/192.154.253.67_udp.ovpn
 # login
 echo '' >> /etc/openvpn/auth.conf
 #password
 echo '' >> /etc/openvpn/auth.conf
 
-#Create service which accept ovpn file in /etc/openvpn as external @ parameter
+#Create service which accept  ovpn file in /etc/openvpn as external @ parameter
 #Создание сервиса который использует имя ovpn файла из /etc/openvpn как внешний @ параметр
 echo '[Unit]' > /lib/systemd/system/openvpn_custom@.service
 echo 'Description=OpenVPN connection to %i' >> /lib/systemd/system/openvpn_custom@.service
@@ -51,7 +51,14 @@ echo 'openvpn@.service (END)' >> /lib/systemd/system/openvpn_custom@.service
 
 systemctl daemon-reload
 
-systemctl start openvpn_custom@104.200.132.35_tcp
+systemctl start openvpn_custom@192.154.253.67_udp
+
+
+echo "*******************************************************************************"
+echo "****************************** EXTERNAL IP ************************************"
+echo "*******************************************************************************"
+wget -qO- eth0.me
+
 
 if [ $3 == "true" ]; then apt upgrade -y; else echo '$3'=$3; fi
 
@@ -118,5 +125,5 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 echo "jenkins url"
 echo 'http://'$5':8080'
 
-systemctl stop openvpn_custom@104.200.132.35_tcp
-systemctl disable openvpn_custom@104.200.132.35_tcp
+systemctl stop openvpn_custom@192.154.253.67_udp
+systemctl disable openvpn_custom@192.154.253.67_udp
